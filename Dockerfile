@@ -1,4 +1,5 @@
 # Copyright (c) 2019 TOYOTA MOTOR CORPORATION
+# Copyright (c) 2020 MID Academic Promotions, Inc.
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -24,64 +25,20 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-FROM ros:melodic
+
+ARG BASE_IMAGE
+
+FROM ${BASE_IMAGE}
 
 SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \
-    apt-get install -y curl apt-transport-https python-pip && \
-    apt-get clean
-
-# OSRF distribution is better for gazebo
-RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' && \
-    curl -L http://packages.osrfoundation.org/gazebo.key | apt-key add -
-
-# install depending packages
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install --no-install-recommends -y \
-    ros-melodic-gazebo-ros ros-melodic-gazebo-plugins ros-melodic-gazebo-ros-control libgazebo9-dev libignition-transport4-dev libpoco-dev python-scipy libgsl-dev \
-    ros-melodic-dwa-local-planner \
-    ros-melodic-eigen-conversions \
-    ros-melodic-robot-state-publisher \
-    ros-melodic-moveit-core \
-    ros-melodic-moveit-plugins \
-    ros-melodic-moveit-planners-ompl \
-    ros-melodic-moveit-ros-planning \
-    ros-melodic-moveit-ros-move-group \
-    ros-melodic-moveit-ros-manipulation \
-    ros-melodic-moveit-simple-controller-manager \
-    ros-melodic-urdfdom-py \
-    ros-melodic-roslint \
-    ros-melodic-joint-state-controller \
-    ros-melodic-joint-trajectory-controller \
-    ros-melodic-move-base \
-    ros-melodic-map-server \
-    ros-melodic-xacro \
-    ros-melodic-joint-state-publisher \
-    liburdfdom-tools \
-    ros-melodic-image-proc \
-    ros-melodic-depth-image-proc \
-    ros-melodic-effort-controllers \
-    ros-melodic-ros-controllers \
-    ros-melodic-pcl-ros \
-    ros-melodic-tf-conversions \
-    ros-melodic-moveit-ros-perception && \
-    pip install -U --ignore-installed pyassimp supervisor supervisor_twiddler && \
-    apt-get autoremove -y && \
-    apt-get clean
-
-RUN mkdir /wrs_ws
-ADD src /wrs_ws/src
-RUN cd /wrs_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_init_workspace || true
-#RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && rosdep update && rosdep install --from-paths src --ignore-src -r -y
-RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
-
-ADD entrypoint-wrs.sh /entrypoint.sh
-
-ENTRYPOINT ["/entrypoint.sh"]
+RUN mkdir /robocup_ws
+ADD src /robocup_ws/src
+RUN cd /robocup_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_init_workspace || true
+#RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && rosdep update && rosdep install --from-paths src --ignore-src -r -y
+RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
 
 #ADD filterable-rosmaster.py /opt/ros/melodic/bin/
 #RUN rm /opt/ros/$ROS_DISTRO/bin/rosmaster && ln -s /opt/ros/$ROS_DISTRO/bin/filterable-rosmaster.py /opt/ros/$ROS_DISTRO/bin/rosmaster

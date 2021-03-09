@@ -1,4 +1,4 @@
-tmc_wrs_binary
+hsrb_robocup_dspl_binary
 ---------------
 
 Authors
