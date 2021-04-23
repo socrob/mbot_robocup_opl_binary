@@ -46,5 +46,5 @@ if [[ -n "${no_proxy}" ]]; then
 fi
 
 docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${BASE_IMAGE}:latest -t ${IMAGE_NAME}:latest . # -t ${IMAGE_NAME}:${BUILD_DATE}
-docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${BASE_IMAGE}:forclass -t ${IMAGE_NAME}:forclass . # -t ${IMAGE_NAME}:${BUILD_DATE}
-docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${IMAGE_NAME}:latest -f Dockerfile.nvidia -t ${IMAGE_NAME}:nvidia . # -t ${IMAGE_NAME}:nvidia-${BUILD_DATE}
+#docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${BASE_IMAGE}:forclass -t ${IMAGE_NAME}:forclass . # -t ${IMAGE_NAME}:${BUILD_DATE}
+#docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${IMAGE_NAME}:latest -f Dockerfile.nvidia -t ${IMAGE_NAME}:nvidia . # -t ${IMAGE_NAME}:nvidia-${BUILD_DATE}

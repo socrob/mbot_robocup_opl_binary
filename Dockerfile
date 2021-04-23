@@ -34,16 +34,30 @@ SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
 
+## Added these requirements to the repository.debs in mbot_simulation_sa so it is faster
+RUN sudo apt-get install ros-$ROS_DISTRO-serial -y
+
+RUN sudo apt-get install python-catkin-tools -y
+
+RUN sudo apt-get install ros-$ROS_DISTRO-rqt -y
+
 RUN mkdir /robocup_ws
 ADD src /robocup_ws/src
 RUN cd /robocup_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_init_workspace || true
+RUN cd /robocup_ws/src/mbot_simulation_sa/ && ./repository.debs
+
+#RUN source /opt/ros/$ROS_DISTRO/setup.bash && cd /robocup_ws/src/tmc_wrs_gazebo/mbot_simulation_sa/resources/packages/monarch_msgs && catkin build --this
+
 #RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && rosdep update && rosdep install --from-paths src --ignore-src -r -y
-RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
+RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin config --install-space /opt/ros/$ROS_DISTRO && catkin config --install && catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
+#RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
 
 #ADD filterable-rosmaster.py /opt/ros/melodic/bin/
 #RUN rm /opt/ros/$ROS_DISTRO/bin/rosmaster && ln -s /opt/ros/$ROS_DISTRO/bin/filterable-rosmaster.py /opt/ros/$ROS_DISTRO/bin/rosmaster
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && rosrun tmc_gazebo_task_evaluators setup_score_widget
+#&& rosrun tmc_gazebo_task_evaluators setup_score_widget
+# && source /robocup_ws/devel/setup.bash
 
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 
