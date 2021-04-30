@@ -34,18 +34,67 @@ SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
 
-## Added these requirements to the repository.debs in mbot_simulation_sa so it is faster
-RUN sudo apt-get install ros-$ROS_DISTRO-serial -y
+# ## Added these requirements to the repository.debs in mbot_simulation_sa so it is faster
+# RUN sudo apt-get install ros-$ROS_DISTRO-serial -y
 
-RUN sudo apt-get install python-catkin-tools -y
+# RUN sudo apt-get install python-catkin-tools -y
 
-RUN sudo apt-get install ros-$ROS_DISTRO-rqt -y
+# RUN sudo apt-get install ros-$ROS_DISTRO-rqt -y
+
+# install depending packages
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install --no-install-recommends -y \
+    ros-melodic-gazebo-ros ros-melodic-gazebo-plugins ros-melodic-gazebo-ros-control libgazebo9-dev libignition-transport4-dev libpoco-dev python-scipy libgsl-dev \
+    ros-melodic-serial \
+    ros-melodic-rqt \
+    python-catkin-tools \
+    ros-melodic-urdf-geometry-parser \
+    ros-melodic-moveit-ros-planning-interface \
+    ros-melodic-people-msgs \
+    ros-melodic-rviz \
+    ros-melodic-twist-mux \
+    ros-melodic-dwa-local-planner \
+    ros-melodic-eigen-conversions \
+    ros-melodic-robot-state-publisher \
+    ros-melodic-moveit-core \
+    ros-melodic-moveit-plugins \
+    ros-melodic-moveit-planners-ompl \
+    ros-melodic-moveit-ros-planning \
+    ros-melodic-moveit-ros-move-group \
+    ros-melodic-moveit-ros-manipulation \
+    ros-melodic-moveit-simple-controller-manager \
+    ros-melodic-urdfdom-py \
+    ros-melodic-roslint \
+    ros-melodic-joint-state-controller \
+    ros-melodic-joint-trajectory-controller \
+    ros-melodic-move-base \
+    ros-melodic-map-server \
+    ros-melodic-xacro \
+    ros-melodic-joint-state-publisher \
+    liburdfdom-tools \
+    ros-melodic-image-proc \
+    ros-melodic-depth-image-proc \
+    ros-melodic-effort-controllers \
+    ros-melodic-ros-controllers \
+    ros-melodic-pcl-ros \
+    ros-melodic-tf-conversions \
+    ros-melodic-four-wheel-steering-msgs \
+    ros-melodic-moveit-ros-perception && \
+    pip install -U --ignore-installed pyassimp supervisor supervisor_twiddler && \
+    apt-get autoremove -y && \
+    apt-get clean
 
 RUN mkdir /robocup_ws
-ADD src /robocup_ws/src
+ADD deps /robocup_ws/src/deps
+#RUN cd /robocup_ws && mkdir src
+#ADD tiago.rosinstall src
 RUN cd /robocup_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_init_workspace || true
-RUN cd /robocup_ws/src/mbot_simulation_sa/ && ./repository.debs
+RUN cd /robocup_ws && rosinstall src /opt/ros/melodic src/deps/tiago.rosinstall
+RUN cd /robocup_ws  && rosdep update
+#RUN cd /robocup_ws && rosdep install --from-paths src --ignore-src -y --rosdistro melodic
 
+ADD src /robocup_ws/src
 #RUN source /opt/ros/$ROS_DISTRO/setup.bash && cd /robocup_ws/src/tmc_wrs_gazebo/mbot_simulation_sa/resources/packages/monarch_msgs && catkin build --this
 
 #RUN cd /robocup_ws && source /opt/ros/$ROS_DISTRO/setup.bash && rosdep update && rosdep install --from-paths src --ignore-src -r -y

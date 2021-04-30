@@ -30,7 +30,7 @@
 set -e
 
 BASE_IMAGE="ghcr.io/hsr-project/hsrb_base_binary"
-IMAGE_NAME="ghcr.io/hsr-project/mbot_robocup_dspl_binary"
+IMAGE_NAME="ghcr.io/socrob/tiago_robocup_opl_binary"
 
 BUILD_DATE=`date +%Y%m%d`
 BUILD_ARGS=""
