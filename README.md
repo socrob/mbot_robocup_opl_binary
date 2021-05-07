@@ -1,13 +1,21 @@
-hsrb_robocup_dspl_binary
+tiago_robocup_opl_binary
 ---------------
 
 Authors
 ---------------
- * Yosuke Matsusaka
+ * SocRob Team
+ * Yosuke Matsusaka (original repo)
 
-Contact
+Usage
 ---------------
- * HSR Support <xr-hsr-support@mail.toyota.co.jp>
+To build the image with the Tiago simulator tye the following commands:
+
+_cd (path to repository)_
+
+_source build.sh_
+
+
+
 
 LICENSE
 ---------------
