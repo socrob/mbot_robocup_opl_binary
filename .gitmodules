@@ -7,3 +7,9 @@
 [submodule "src/tmc_wrs_gazebo"]
 	path = src/tmc_wrs_gazebo
 	url = https://github.com/hsr-project/tmc_wrs_gazebo.git
+[submodule "src/tiago_robot"]
+	path = src/tiago_robot
+	url = https://github.com/socrob/tiago_robot.git
+[submodule "src/tiago_simulation"]
+	path = src/tiago_simulation
+	url = https://github.com/socrob/tiago_simulation.git
