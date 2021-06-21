@@ -60,8 +60,8 @@ POSSIBILITY OF SUCH DAMAGE.
   <arg name="world_name" default="$(find tmc_wrs_gazebo_worlds)/worlds/wrs2020$(arg world_suffix)$(arg world_suffix2)$(arg world_suffix3).world" />
 
   <!--arg name="robot_pos" default="-x -2.1 -y 1.2 -z 0 -Y -1.57 -J arm_1_joint 1.57 -J arm_2_joint -1 -J arm_3_joint -3.14 -J arm_4_joint 2" /-->
-  <arg name="robot_pos" default="-x -2.1 -y 1.2 -z 0 -Y 0.0" /> 
-  <!--arg name="robot_pos" default="-x -2.1 -y 1.2 -z 0 -Y -1.57" /-->
+  <!-- <arg name="robot_pos" default="-x -2.1 -y 1.2 -z 0 -Y 0.0" />  -->
+  <arg name="robot_pos" default="-x -2.1 -y 1.2 -z 0 -Y -1.57" />
 
   <param name="/use_sim_time" value="true" />
 
