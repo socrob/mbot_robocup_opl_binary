@@ -59,6 +59,7 @@ RUN apt-get update && \
     ros-melodic-robot-state-publisher \
     ros-melodic-moveit-core \
     ros-melodic-moveit-plugins \
+    ros-melodic-moveit-commander \
     ros-melodic-moveit-planners-ompl \
     ros-melodic-moveit-ros-planning \
     ros-melodic-moveit-ros-move-group \
@@ -80,6 +81,11 @@ RUN apt-get update && \
     ros-melodic-pcl-ros \
     ros-melodic-tf-conversions \
     ros-melodic-four-wheel-steering-msgs \
+    ros-melodic-smach \
+    ros-melodic-smach-msgs \
+    ros-melodic-smach-ros \
+    ros-melodic-amcl \
+    ros-melodic-global-planner \
     ros-melodic-moveit-ros-perception && \
     pip install -U --ignore-installed pyassimp supervisor supervisor_twiddler && \
     apt-get autoremove -y && \
